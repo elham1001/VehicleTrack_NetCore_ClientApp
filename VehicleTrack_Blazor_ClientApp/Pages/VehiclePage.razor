@@ -1,0 +1,166 @@
+﻿@page "/VehiclePage"
+
+@using VehicleTrack_NetCore_API.Models
+@using Microsoft.AspNetCore.SignalR.Client
+ 
+
+@inject HttpClient Http
+
+<div>
+    
+        <h3>Vehicle List</h3>
+   
+</div>
+
+@if (vehicles == null)
+{
+    if (isLoading == true)
+    {
+        <p>Loading...</p>
+    }
+
+}
+
+else
+{
+
+    <div class="row" style="padding-top:10px">
+        <div class="col-md-4">
+            <select class="form-control" @onchange="CustomerClicked">
+                <option value="-1">-- Select Customer --</option>
+                @foreach (var customer in customerList)
+                {
+                    <option value="@customer.CID">@customer.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <select class="form-control" @onchange="StatusClicked">
+                <option value="-1">-- Select Status --</option>
+                <option value="1">Connected</option>
+                <option value="0">Disconnected</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row">
+        @foreach (var vehicle in vehicles)
+        {
+            <div class="col-lg-6 col-md-12 mb-2">
+                <form>
+                    <div class="card border-primary rounded-0">
+                        <div class="card-header p-0">
+                            <div class=" @(vehicle.Conection==true ? "bg-info  text-white text-center":"bg-danger  text-white text-center")">
+                                <h3>
+                                    Vehicle Info
+                                </h3>
+                                <p class="m-0">
+                                    VIN Number: @vehicle.VehicleID
+                                </p>
+                            </div>
+
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="form-group">
+                                <div class="text-center">
+
+                                    <p class="m-0">
+                                        Registration No: @vehicle.RegNo
+                                    </p>
+                                </div>
+                                <div class="text-center">
+
+                                    <p class="m-0">
+                                        Connection Status: @(vehicle.Conection == true ? "Connected" : "Disconnected")
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        }
+    </div>
+}
+
+
+@code {
+
+    List<Vehicle> vehicles;
+    bool isLoading = false;
+
+    List<Customer> customerList = new List<Customer>();
+    string customerID { get; set; }
+    string StatusID { get; set; }
+ 
+
+    HubConnection connection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        await Task.Delay(2000);
+
+        customerID = StatusID = "-1"; //Load All Data
+
+        customerList = await Http.GetJsonAsync<List<Customer>>(@"https://localhost:44317/api/Customer/all");
+        vehicles = await Http.GetJsonAsync<List<Vehicle>>(@"https://localhost:44317/api/Vehicle/filter?CustomerID=" + customerID + "&statusID=" + StatusID);
+
+        connection = new HubConnectionBuilder().WithUrl("https://localhost:44317/chathub").Build();
+        connection.On<List<Vehicle>>("broadcastMessage", this.OnBroadcastMessage);
+        await connection.StartAsync();
+
+
+
+        this.StateHasChanged();
+
+        isLoading = false;
+
+    }
+
+    protected async void CustomerClicked(ChangeEventArgs customerEvent)
+    {
+
+        customerID = customerEvent.Value.ToString();
+
+        vehicles = await Http.GetJsonAsync<List<Vehicle>>(@"https://localhost:44317/api/Vehicle/filter?CustomerID=" + customerID + "&statusID=" + StatusID);
+
+        this.StateHasChanged();
+    }
+
+    protected async void StatusClicked(ChangeEventArgs statusEvent)
+    {
+
+        StatusID = statusEvent.Value.ToString();
+
+        vehicles = await Http.GetJsonAsync<List<Vehicle>>(@"https://localhost:44317/api/Vehicle/filter?CustomerID=" + customerID + "&statusID=" + StatusID);
+        this.StateHasChanged();
+    }
+
+
+    Task OnBroadcastMessage(List<Vehicle> vehicles_withStatus)
+    {
+        //Update only Status
+        foreach (var x in vehicles)
+        {
+            x.Conection = vehicles_withStatus.First(d => d.VehicleID == x.VehicleID).Conection;
+        }
+
+
+        StateHasChanged();
+
+        return Task.CompletedTask;
+
+
+    }
+
+
+
+
+
+
+}
