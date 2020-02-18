@@ -3,12 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleTrack_Blazor_ClientApp", "VehicleTrack_Blazor_ClientApp\VehicleTrack_Blazor_ClientApp.csproj", "{8D478924-543D-4EA7-B5A1-436FA975DDD4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8AE1A6F9-CF49-4BD6-AAFF-F57172B62456} = {8AE1A6F9-CF49-4BD6-AAFF-F57172B62456}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleTrack_Blazor_ClientApp", "VehicleTrack_Blazor_ClientApp\VehicleTrack_Blazor_ClientApp.csproj", "{8D478924-543D-4EA7-B5A1-436FA975DDD4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleTrack_NetCore_API", "..\VehicleTrack_NetCore_API\VehicleTrack_NetCore_API\VehicleTrack_NetCore_API.csproj", "{8AE1A6F9-CF49-4BD6-AAFF-F57172B62456}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleTrack_NetCore_API", "VehicleTrack_NetCore_API\VehicleTrack_NetCore_API\VehicleTrack_NetCore_API.csproj", "{4EF3B091-7A1F-4FF4-9333-900905157A11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,10 +17,10 @@ Global
 		{8D478924-543D-4EA7-B5A1-436FA975DDD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D478924-543D-4EA7-B5A1-436FA975DDD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D478924-543D-4EA7-B5A1-436FA975DDD4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AE1A6F9-CF49-4BD6-AAFF-F57172B62456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AE1A6F9-CF49-4BD6-AAFF-F57172B62456}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AE1A6F9-CF49-4BD6-AAFF-F57172B62456}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AE1A6F9-CF49-4BD6-AAFF-F57172B62456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EF3B091-7A1F-4FF4-9333-900905157A11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EF3B091-7A1F-4FF4-9333-900905157A11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EF3B091-7A1F-4FF4-9333-900905157A11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EF3B091-7A1F-4FF4-9333-900905157A11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
